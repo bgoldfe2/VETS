@@ -43,29 +43,19 @@ CREATE TABLE IF NOT EXISTS vets.communications
 
 DROP TABLE IF EXISTS vets.documentation;
 
-
 DROP TABLE IF EXISTS vets.people;
 CREATE TABLE IF NOT EXISTS vets.people
 (
     people_id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
     f_name character varying,
     l_name character varying,
-    created timestamp with time zone,
     org_name character varying,
     email character varying,
     phone_num character varying,
     usr_category user_type,
-    CONSTRAINT people_pkey 
+    created timestamp with time zone,
+	CONSTRAINT people_pkey 
 		PRIMARY KEY (people_id)
-);
-
-DROP TABLE IF EXISTS vets.people_communications;
-CREATE TABLE IF NOT EXISTS vets.people_communications
-(
-    ppl_id integer NOT NULL,
-    comm_id integer NOT NULL,
-    CONSTRAINT people_communications_pkey 
-		PRIMARY KEY (ppl_id, comm_id)
 );
 
 DROP TABLE IF EXISTS vets.products;
@@ -75,10 +65,21 @@ CREATE TABLE IF NOT EXISTS vets.products
 	name character varying NOT NULL,
     version character varying,
     price money,
-    created timestamp with time zone NOT NULL,
     vnd_id character varying UNIQUE,
-    CONSTRAINT products_pkey 
+    created timestamp with time zone NOT NULL,
+	CONSTRAINT products_pkey 
 		PRIMARY KEY (product_id)
+);
+
+-- Create XREF tables for many to many relations --
+DROP TABLE IF EXISTS vets.people_communications;
+CREATE TABLE IF NOT EXISTS vets.people_communications
+(
+    ppl_id integer NOT NULL,
+    comm_id integer NOT NULL,
+	created timestamp with time zone NOT NULL,
+    CONSTRAINT people_communications_pkey 
+		PRIMARY KEY (ppl_id, comm_id)
 );
 
 DROP TABLE IF EXISTS vets.products_communications;
@@ -86,6 +87,7 @@ CREATE TABLE IF NOT EXISTS vets.products_communications
 (
     pdct_id integer NOT NULL,
     comm_id integer NOT NULL,
+	created timestamp with time zone NOT NULL,
     CONSTRAINT products_communications_pkey 
 		PRIMARY KEY (pdct_id, comm_id)
 );

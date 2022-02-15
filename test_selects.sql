@@ -1,0 +1,5 @@
+--select * from vets.communications;
+--select * from vets.people;
+--select * from vets.products;
+--select * from vets.products_communications;
+--select * from vets.people_communications;
